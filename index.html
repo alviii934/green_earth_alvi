@@ -115,8 +115,12 @@
                 </div> -->
                 <!-- CARD END -->
 
+
               </div>
             </main>
+
+            <!-- modal -->
+
 
             <!-- RIGHT CART -->
             <aside class="md:col-span-2 bg-white rounded-lg p-2 shadow-sm h-fit">
@@ -241,6 +245,24 @@
 </footer>
 
 </head>
+
+
+<!-- Open the modal using ID.showModal() method -->
+<!-- <button class="btn" onclick="my_modal_5.showModal()">Open Modal</button> -->
+<dialog id="modal-design" class="modal modal-bottom sm:modal-middle">
+  <div class="modal-box">
+    <!-- modal content -->
+    <div id="modal-container" class="space-y-2">
+        
+    </div>
+    <div class="modal-action">
+      <form method="dialog">
+        <!-- if there is a button in form, it will close the modal -->
+        <button class="btn hover:bg-gray-300 border-none">Close</button>
+      </form>
+    </div>
+  </div>
+</dialog>
 
 <body>
   <script src="scripts.js"></script>
