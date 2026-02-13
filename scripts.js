@@ -40,16 +40,18 @@ const removeActive = () => {
 //onClick(showSpecificTree()
 
 const showCatagoricalTree = id => {
+  manageSpinner(true); //
+
   fetch(`https://openapi.programming-hero.com/api/category/${id}`)
     .then(res => res.json())
     .then(data => {
-      removeActive(); // remove all active class
+      removeActive();
       const clickCtaButton = document.getElementById(`catagory-btn-${id}`);
-      //console.log(clickCtaButton);
       clickCtaButton.classList.add('active');
       displayCatagoricalTree(data.plants);
     });
 };
+
 
 const displayCatagoricalTree = catWords => {
   const allCatPlantsContainer = document.getElementById('all-plants');
@@ -58,7 +60,7 @@ const displayCatagoricalTree = catWords => {
   for (const catWord of catWords) {
     // step-3 : crete element
     const allCatPlantDiv = document.createElement('div');
-   
+
     allCatPlantDiv.innerHTML = ` 
                              <div class="bg-white rounded-xl shadow-sm hover:shadow-md transition duration-300 w-full">
                   <figure class="p-3">
@@ -89,6 +91,7 @@ const displayCatagoricalTree = catWords => {
     // step-4 : append into container
     allCatPlantsContainer.append(allCatPlantDiv);
   }
+  manageSpinner(false);
   //console.log(catWords);
   // get the container empty
   // get into every lesson
@@ -163,7 +166,18 @@ const displayWordDetailforModal = details => {
   detailsModal.innerHTML = `<h1 class="font-bold text-xl">${details.name}</h1>
         <img class="rounded-md h-56 w-full object-cover" src="${details.image}" alt="">
         <h2><span class="font-bold">Catagory:</span>${details.category} </h2>
-        <p><span class="font-bold">Price:</span>${details.price}</p>
+        <p><span class="font-bold">Price:</span>৳${details.price}</p>
         <P> <span class="font-bold">Description:</span>${details.description}</P>`;
-   document.getElementById('modal-design').showModal();
+  document.getElementById('modal-design').showModal();
+};
+
+// spinner 
+const manageSpinner = status => {
+  if (status == true) {
+    document.getElementById('spinner').classList.remove('hidden');
+    document.getElementById('all-plants').classList.add('hidden');
+  } else {
+    document.getElementById('all-plants').classList.remove('hidden');
+    document.getElementById('spinner').classList.add('hidden');
+  }
 };
