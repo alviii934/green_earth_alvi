@@ -52,7 +52,6 @@ const showCatagoricalTree = id => {
     });
 };
 
-
 const displayCatagoricalTree = catWords => {
   const allCatPlantsContainer = document.getElementById('all-plants');
   allCatPlantsContainer.innerHTML = '';
@@ -80,11 +79,11 @@ const displayCatagoricalTree = catWords => {
                       </span>
                       <span class="font-semibold text-sm">৳<span> ${catWord.price}</span></span>
                     </div>
-
-                    <button
-                      class="w-full mt-2 text-sm py-2 rounded-full bg-[#15803D] text-white hover:bg-green-700 cursor-pointer transition">
-                      Add to Cart
-                    </button>
+               <button
+              onclick="addToCart('${catWord.name}', '${catWord.price}')" 
+              class="w-full mt-2 text-sm py-2 rounded-full bg-[#15803D] text-white hover:bg-green-700 cursor-pointer transition">
+              Add to Cart
+             </button>
                   </div>
                 </div>
               `;
@@ -141,9 +140,10 @@ const displayLoaAllPlants = allPlants => {
                     </div>
 
                     <button
-                      class="w-full mt-2 text-sm py-2 rounded-full bg-[#15803D] text-white hover:bg-green-700 cursor-pointer transition">
-                      Add to Cart
-                    </button>
+                   onclick="addToCart('${plant.name}', '${plant.price}')" 
+                   class="w-full mt-2 text-sm py-2 rounded-full bg-[#15803D] text-white hover:bg-green-700 cursor-pointer transition">
+                   Add to Cart
+                  </button>
                   </div>
                 </div>
               `;
@@ -171,7 +171,7 @@ const displayWordDetailforModal = details => {
   document.getElementById('modal-design').showModal();
 };
 
-// spinner 
+// spinner
 const manageSpinner = status => {
   if (status == true) {
     document.getElementById('spinner').classList.remove('hidden');
@@ -180,4 +180,56 @@ const manageSpinner = status => {
     document.getElementById('all-plants').classList.remove('hidden');
     document.getElementById('spinner').classList.add('hidden');
   }
+};
+
+let cart = [];
+let totalAmount = 0;
+
+
+const addToCart = (name, price) => {
+  const item = {
+    id: Date.now(), // unique ID for removing
+    name: name,
+    price: parseInt(price),
+  };
+
+  cart.push(item);
+  updateCartUI();
+};
+
+const updateCartUI = () => {
+  const cartContainer = document.querySelector('#cart-details .space-y-3');
+  const totalElement = document.querySelector(
+    '#cart-details .flex.justify-between.font-semibold.text-sm span:last-child',
+  );
+
+  cartContainer.innerHTML = '';
+  let currentTotal = 0;
+
+  cart.forEach(item => {
+    currentTotal += item.price;
+
+    const cartItem = document.createElement('div');
+    cartItem.className =
+      'bg-green-100 flex justify-between items-center rounded-md p-3';
+
+    cartItem.innerHTML = `
+      <div>
+        <h4 class="font-semibold text-sm">${item.name}</h4>
+        <p class="text-xs text-gray-500">৳${item.price} × 1</p>
+      </div>
+      <button onclick="removeFromCart(${item.id})" class="text-gray-400 hover:text-red-500 font-bold text-lg transition">
+        ×
+      </button>
+    `;
+
+    cartContainer.appendChild(cartItem);
+  });
+
+  totalElement.innerText = `৳${currentTotal}`;
+};
+
+const removeFromCart = (id) => {
+  cart = cart.filter(item => item.id !== id);
+  updateCartUI();
 };
